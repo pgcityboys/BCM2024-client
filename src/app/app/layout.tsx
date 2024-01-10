@@ -1,3 +1,5 @@
+import { ModeToggle } from "@/components/ModeToggle"
+import { Navbar } from "@/components/app/Navbar"
 import { ReactNode } from "react"
 
 export default function Layout({children} : {
@@ -6,9 +8,7 @@ export default function Layout({children} : {
   
   return (
     <div className="flex justify-start items-center"> 
-       <div id="nvbar" className="flex flex-col items-center justify-start gap-8">
-         chuj123
-       </div>
+      <Navbar/>
       <main>
         {children}
       </main>
