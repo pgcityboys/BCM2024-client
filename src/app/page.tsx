@@ -1,5 +1,9 @@
+import MapWrapper from '@/ui/maps/MapWrapper';
+
 export default function Home() {
   return (
-    <div> tu bedzie homepage </div>
+    <div> 
+      Welcome home honey
+    </div>
   )
 }
