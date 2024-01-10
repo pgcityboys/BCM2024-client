@@ -1,18 +1,16 @@
-'use server'
-import React, { FC } from 'react';
+import React from 'react';
 import Map from './Map';
 require('dotenv').config()
 
 const MapWrapper = () => {
     const defaultProps = {
         center: {
-          lat: 10.99835602,
-          lng: 77.01502627
+          lat: 54.4279049,
+          lng: 18.5904457
         },
         zoom: 11,
         api_key: process.env.GOOGLE_MAPS_API_KEY || 'chuj'
       };
-      console.log(defaultProps.api_key);
   return (
     <Map
       center={defaultProps.center}
