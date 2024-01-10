@@ -12,6 +12,8 @@ const Layout = async ({children} : {
   const session = await getServerSession(authOptions)
   if(isNull(session)){
     redirect('/login')
+  } else {
+    console.log(JSON.stringify(session))
   }
 
   return (
