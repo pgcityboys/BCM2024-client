@@ -2,11 +2,9 @@ import MapWrapper from "@/ui/maps/MapWrapper"
 
 const Page = () => {
   return (
-    <div className="width-screen height-screen">
-            Mapka
-            <MapWrapper/>
-    </div>
-   
+<div className="flex items-center justify-center h-[75vh] w-[75vh]">
+    <MapWrapper/>
+</div>
   )
 }
 

@@ -14,7 +14,7 @@ export interface MapPropsTypes {
 const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div className='h-full w-full'>
       <GoogleMapReact
         bootstrapURLKeys={{ key: api_key }}
         defaultCenter={center}
