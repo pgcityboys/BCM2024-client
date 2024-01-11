@@ -15,6 +15,7 @@ import PlaceInfo from './PlaceInfo';
 import { Checkbox } from '@/components/ui/checkbox';
 import LocationsVisibilityCheckBoxes from './LocationsVisibilityCheckBoxes';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TierVehicle } from '@/lib/types/tierVehicle';
 
 
 export interface MapPropsTypes {
@@ -32,6 +33,8 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   
   const [displayedStation, setDisplayedStation] = useState<MevoStation>();
   const [displayedPlace, setDisplayedPlace] = useState<Location>();
+  const [displayedTier, setDisplayedTier] = useState<TierVehicle>();
+ 
   const [displayedStationVehicles, setDisplayedStationVehicles] = useState<StationVehicles>();
   
   
@@ -44,6 +47,7 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   let [route, setRoute] = useState({routes: [WYPIERDALAJ_Z_TYMI_MAPAMI]});
 
   const [places, setPlaces] = useState<Location[]>([]);
+  const [tierVehicles, setTierVehicles] = useState<TierVehicle>();
 
   const [showMarkers, setShowMarkers] = useState<ShowMarkers>({
     showMevo: false,
@@ -70,7 +74,15 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
       const stations: MevoStation[] = response.data.data;
       setStations(stations);
     }
+    const fetchTier = async () => {
+      const response = await axios.get(`http://localhost:8083/api/vehicles`);
+      const tiers: TierVehicle = response.data;
+      console.log(tiers);
+      setTierVehicles(tiers);
+    }
     fetchStations();
+    fetchTier();
+    console.log("debug  " + tierVehicles);
   }, [])
 
 
@@ -81,6 +93,7 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
       const vehicles: StationVehicles = response.data;
       setDisplayedStationVehicles(vehicles);
     }
+    
     if(showMarkers.showInfo === InfoType.MEVO)
       fetchVehicles();
   }, [displayedStation, showMarkers.showInfo])
@@ -91,9 +104,13 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   };
 
   const handlePlaceClick = (location: Location) => {
-    console.log("click")
     setDisplayedPlace(location);
     setShowMarkers({...showMarkers, showInfo: InfoType.PLACE});
+  };
+
+  const handleTierClick = (tier: TierVehicle) => {
+    setDisplayedTier(tier);
+    setShowMarkers({...showMarkers, showInfo: InfoType.TIER});
   };
 
   const resetRoute = () => {
@@ -146,6 +163,15 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
               key={place.id}
             />
           })}
+
+          {(showMarkers.showTier && tierVehicles) && tierVehicles.data.map((tier) => {
+            return <Marker
+              position={{lat: tier.coordinates.lat, lng: tier.coordinates.lon}}
+              key={tier.id}
+              icon={'../tier32.png'}
+            />
+          })}
+
         </GoogleMap>
           <span className='h-[60vh] w-[40vw] flex flex-col justify-start items-center bg-slate-600 rounded-xl'>
           <Tabs defaultValue='Point Info'>
