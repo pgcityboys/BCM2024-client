@@ -4,10 +4,10 @@ import  GoogleMapReact  from 'google-map-react';
 import { MevoStation } from '@/lib/types/mevoStation';
 import axios from 'axios';
 import { StationVehicles } from '@/lib/types/stationVehicles';
-import MapSearch from './MapSearch';
 import RoutePoints from './RoutePoints';
 import { Location } from '@/lib/types/location';
 import StationInfo from './StationInfo';
+import { WYPIERDALAJ_Z_TYMI_MAPAMI } from './jsontest';
 
 export interface MapPropsTypes {
     center: {
@@ -17,6 +17,7 @@ export interface MapPropsTypes {
     zoom: number,
     api_key: string
 }
+
 
 const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   const [mapKey, setMapKey] = useState<string>('initialVal');
@@ -32,6 +33,10 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   const [routeSource, setRouteSource] = useState<Location | undefined>();
   const [routeDestination, setRouteDestination] = useState<Location | undefined>()
   const [displayRoute, setDisplayRoute] = useState<Boolean>(false);
+
+
+  let mapRef = useRef(null)
+  let rendererRef = useRef()
 
   useEffect(() => {
     const fetchStations = async () => {
@@ -51,10 +56,14 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     }
     if(displayStationInfo)
       fetchVehicles();
-  }, [displayedStation])
+  }, [displayedStation, displayStationInfo])
 
 
   const renderMarkers = (map: any, maps: any) => {
+    mapRef.current = maps;
+    let renderer = new maps.DirectionsRenderer();
+    renderer.setMap(map);
+    rendererRef.current = renderer;
     let markers: any[] = [];
     stations.map((location: any) => {
       const marker = 
@@ -69,6 +78,7 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     return markers;
    };
 
+
    const handleMarkerClick = (location: MevoStation) => {
     setDisplayedStation(location);
     setDisplayInfo(true);
@@ -81,38 +91,41 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     setRouteSource(undefined);
   }
 
+  const renderRoute = () => {
+    rendererRef.current!.setDirections(WYPIERDALAJ_Z_TYMI_MAPAMI)
+  }
+
   return (
-    <div className='h-full w-full'>
-      <MapSearch getSearchResults={() => console.log('dupa')}/>
+    <div className='h-full w-full flex items-start justify-center'>
       <GoogleMapReact
         key={mapKey}
         bootstrapURLKeys={{ key: api_key }}
         defaultCenter={center}
         defaultZoom={zoom}
         yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-      >
-      </GoogleMapReact>
-
-      {(displayStationInfo && displayedStation && displayedStationVehicles) && 
-        <StationInfo
-          displayedStation={displayedStation}
-          displayedStationVehicles={displayedStationVehicles}
-          waypoints={waypoints}
-          setRouteSource={setRouteSource}
-          setRouteDestination={setRouteDestination}
-          setWaypoints={setWaypoints}
-        />
-      }
-
-      {(waypoints) && 
-        <RoutePoints 
-          routeDestination={routeDestination} 
-          routeSource={routeSource} 
-          waypoints={waypoints}
-          resetRoute={resetRoute}
+        onGoogleApiLoaded={({ map, maps }) => {renderMarkers(map, maps)}}
+      />
+      <span className='min-h-48 flex flex-col justify-start items-center'>
+        {(displayStationInfo && displayedStation && displayedStationVehicles) && 
+          <StationInfo
+            displayedStation={displayedStation}
+            displayedStationVehicles={displayedStationVehicles}
+            waypoints={waypoints}
+            setRouteSource={setRouteSource}
+            setRouteDestination={setRouteDestination}
+            setWaypoints={setWaypoints}
           />
-      }
+        }
+
+        {(waypoints) && 
+          <RoutePoints 
+            routeDestination={routeDestination} 
+            routeSource={routeSource} 
+            waypoints={waypoints}
+            resetRoute={resetRoute}
+            />
+        }
+      </span>
     </div>
   )
 }
