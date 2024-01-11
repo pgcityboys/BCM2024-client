@@ -56,10 +56,29 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
 
   useEffect(() => {
     const fetchVehicles = async () => {
-      const response = await axios.get(`http://localhost:2222/api/vehicles`);
+      let lat = 0;
+      let lng = 0;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          lat = position.coords.latitude;
+          lng = position.coords.longitude;
+        },
+        (error) => {
+          // Handle errors, e.g. user denied location sharing permissions
+          console.error("Error getting user location:", error);
+        }
+      );
+      console.log(`Latitude: ${lat}, longitude: ${lng}`);
+      let specifier = "";
+      if (lat != 0 && lng != 0) {
+        specifier = "?lat=" + lat + "&lng=" + lng;
+      }
+      const url = 'http://localhost:8083/api/vehicles' + specifier
+      const response = await axios.get(url);
       const vehicles: TierVehicles = response.data;
       setTierVehicles(vehicles);
-      console.log(tierVehicles)
+      console.log(tierVehicles);
+
     }
     fetchVehicles();
   }, [])
