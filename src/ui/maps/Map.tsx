@@ -6,8 +6,13 @@ import { StationVehicles } from '@/lib/types/stationVehicles';
 import RoutePoints from './RoutePoints';
 import { Location } from '@/lib/types/location';
 import StationInfo from './StationInfo';
+<<<<<<< HEAD
 import { WYPIERDALAJ_Z_TYMI_MAPAMI } from './jsontest';
 import { GoogleMap, useLoadScript, Marker, Polyline, DirectionsRenderer } from '@react-google-maps/api';
+=======
+import { WYPIERDALAJ_Z_TYMI_MAPAMI, lepsze_mapy } from './jsontest';
+import { GoogleMap, useLoadScript, Marker, Polyline } from '@react-google-maps/api';
+>>>>>>> 85f3f77 (Add basic route drawing)
 
 export interface MapPropsTypes {
     center: {
@@ -39,6 +44,8 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   const {isLoaded} = useLoadScript({
     googleMapsApiKey: api_key
   })
+
+  let [route, setRoute] = useState(lepsze_mapy)
 
   const mapContainerStyle = {
     width: '100%',
@@ -102,8 +109,17 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
             key={station.id}
           />
         })}
-          <DirectionsRenderer 
-            directions={route}
+        <Polyline path={lepsze_mapy } options={{geodesic: true}}/>
+      </GoogleMap>
+        <span className='min-h-48 flex flex-col justify-start items-center'>
+        {(displayStationInfo && displayedStation && displayedStationVehicles) && 
+          <StationInfo
+            displayedStation={displayedStation}
+            displayedStationVehicles={displayedStationVehicles}
+            waypoints={waypoints}
+            setRouteSource={setRouteSource}
+            setRouteDestination={setRouteDestination}
+            setWaypoints={setWaypoints}
           />
         </GoogleMap>
       <span className='min-h-48 flex flex-col justify-start items-center'>

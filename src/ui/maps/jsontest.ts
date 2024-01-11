@@ -339,3 +339,5 @@ export const WYPIERDALAJ_Z_TYMI_MAPAMI =
        
     ]
  }
+
+export const lepsze_mapy: google.maps.LatLngLiteral[] = WYPIERDALAJ_Z_TYMI_MAPAMI.paths[0].steps!.map((step) => {return {lat: step.start_coordinates.lat || 0, lng: step.start_coordinates.lon || 0}});
