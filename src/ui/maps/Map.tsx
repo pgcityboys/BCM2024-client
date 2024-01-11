@@ -8,6 +8,13 @@ import { Location } from '@/lib/types/location';
 import StationInfo from './StationInfo';
 import { WYPIERDALAJ_Z_TYMI_MAPAMI } from './jsontest';
 import { GoogleMap, useLoadScript, Marker, Polyline, DirectionsRenderer } from '@react-google-maps/api';
+import MapSearch from './MapSearch';
+import { ShowMarkers } from '@/lib/types/showMarkers';
+import { InfoType } from '@/lib/types/InfoType';
+import PlaceInfo from './PlaceInfo';
+import { Checkbox } from '@/components/ui/checkbox';
+import LocationsVisibilityCheckBoxes from './LocationsVisibilityCheckBoxes';
+
 
 export interface MapPropsTypes {
     center: {
@@ -20,21 +27,30 @@ export interface MapPropsTypes {
 
 
 const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
-  const [mapKey, setMapKey] = useState<string>('initialVal');
-
   const [stations, setStations] = useState<MevoStation[]>([]);
   
-  const [displayStationInfo, setDisplayInfo] = useState<Boolean>(false);
   const [displayedStation, setDisplayedStation] = useState<MevoStation>();
+  const [displayedPlace, setDisplayedPlace] = useState<Location>();
   const [displayedStationVehicles, setDisplayedStationVehicles] = useState<StationVehicles>();
   
   
   const [waypoints, setWaypoints] = useState<Location[]>([]);
   const [routeSource, setRouteSource] = useState<Location | undefined>();
   const [routeDestination, setRouteDestination] = useState<Location | undefined>()
+
   const [displayRoute, setDisplayRoute] = useState<Boolean>(false);
   
   let [route, setRoute] = useState({routes: [WYPIERDALAJ_Z_TYMI_MAPAMI]});
+
+  const [places, setPlaces] = useState<Location[]>([]);
+
+  const [showMarkers, setShowMarkers] = useState<ShowMarkers>({
+    showMevo: false,
+    showTier: false,
+    showPlaces: false,
+    showInfo: InfoType.NONE
+  })
+
 
   const {isLoaded} = useLoadScript({
     googleMapsApiKey: api_key
@@ -52,7 +68,6 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
       const response = await axios.get(`http://localhost:8080/api/stations`);
       const stations: MevoStation[] = response.data.data;
       setStations(stations);
-      setMapKey('newKey')
     }
     fetchStations();
   }, [])
@@ -65,68 +80,104 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
       const vehicles: StationVehicles = response.data;
       setDisplayedStationVehicles(vehicles);
     }
-    if(displayStationInfo)
+    if(showMarkers.showInfo === InfoType.MEVO)
       fetchVehicles();
-  }, [displayedStation, displayStationInfo])
+  }, [displayedStation, showMarkers.showInfo])
 
-   const handleMarkerClick = (location: MevoStation) => {
+  const handleMevoClick = (location: MevoStation) => {
     setDisplayedStation(location);
-    setDisplayInfo(true);
+    setShowMarkers({...showMarkers, showInfo: InfoType.MEVO});
+  };
+
+  const handlePlaceClick = (location: Location) => {
+    console.log("click")
+    setDisplayedPlace(location);
+    setShowMarkers({...showMarkers, showInfo: InfoType.PLACE});
   };
 
   const resetRoute = () => {
-    setWaypoints([]); 
-    setDisplayRoute(false); 
+    setWaypoints([]);  
     setRouteDestination(undefined);
     setRouteSource(undefined);
   }
 
 
+  const searchPlaces = (places: Location[]) => {
+    setPlaces(places);
+    setShowMarkers({
+      showMevo: false,
+      showPlaces: true, 
+      showTier: false,
+      showInfo: InfoType.NONE
+    })
+  }
+
   if(!isLoaded) {
     return <div> loading </div>
   }
-
+//
   return (
-    <div className='h-full w-full flex items-start justify-center'>
-      <GoogleMap
-        zoom={zoom}
-        center={center}
-        mapContainerStyle={mapContainerStyle}
-        ref={mapRef}
-      >
-        {stations.map((station) => {
-          return <Marker
-            position={{lat: station.coordinates.lat, lng: station.coordinates.lon}}
-            icon={'../mevo32.png'}
-            onClick={ () => handleMarkerClick(station)}
-            key={station.id}
-          />
-        })}
-          <DirectionsRenderer 
-            directions={route}
-          />
-        </GoogleMap>
-      <span className='min-h-48 flex flex-col justify-start items-center'>
-      {(displayStationInfo && displayedStation && displayedStationVehicles) && 
-        <StationInfo
-          displayedStation={displayedStation}
-          displayedStationVehicles={displayedStationVehicles}
-          waypoints={waypoints}
-          setRouteSource={setRouteSource}
-          setRouteDestination={setRouteDestination}
-          setWaypoints={setWaypoints}
-        />
-      }
+    <div className='flex flex-col items-center justify-center h-full w-full'>
+      <MapSearch setPlaces={searchPlaces}/>
+      <LocationsVisibilityCheckBoxes
+        showMarkers={showMarkers}
+        setShowMarkers={setShowMarkers}
+      />
+      <div className='h-full w-full flex items-start justify-center'>
+        <GoogleMap
+          zoom={zoom}
+          center={center}
+          mapContainerStyle={mapContainerStyle}
+        >
+          {showMarkers.showMevo && stations.map((station) => {
+            return <Marker
+              position={{lat: station.coordinates.lat, lng: station.coordinates.lon}}
+              icon={'../mevo32.png'}
+              onClick={ () => handleMevoClick(station)}
+              key={station.id}
+            />
+          })}
 
-      {(waypoints) && 
-        <RoutePoints 
-          routeDestination={routeDestination} 
-          routeSource={routeSource} 
-          waypoints={waypoints}
-          resetRoute={resetRoute}
-          />
-      }
-      </span>
+          {showMarkers.showPlaces && places.map((place) => {
+            return <Marker
+              position={{lat: place.coordinates.lat, lng: place.coordinates.lon}}
+              onClick={ () => handlePlaceClick(place)}
+              key={place.id}
+            />
+          })}
+        </GoogleMap>
+          <span className='min-h-48 flex flex-col justify-start items-center'>
+          {(showMarkers.showInfo == InfoType.MEVO && displayedStation && displayedStationVehicles) && 
+            <StationInfo
+              displayedStation={displayedStation}
+              displayedStationVehicles={displayedStationVehicles}
+              waypoints={waypoints}
+              setRouteSource={setRouteSource}
+              setRouteDestination={setRouteDestination}
+              setWaypoints={setWaypoints}
+            />
+          }
+
+          {(showMarkers.showInfo == InfoType.PLACE && displayedPlace) && 
+            <PlaceInfo
+              displayedPlace={displayedPlace}
+              waypoints={waypoints}
+              setRouteSource={setRouteSource}
+              setRouteDestination={setRouteDestination}
+              setWaypoints={setWaypoints}
+            />
+          }   
+
+          {(waypoints) && 
+            <RoutePoints 
+              routeDestination={routeDestination} 
+              routeSource={routeSource} 
+              waypoints={waypoints}
+              resetRoute={resetRoute}
+              />
+          }
+        </span>
+      </div>
     </div>
   )
 }

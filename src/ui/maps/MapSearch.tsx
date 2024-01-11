@@ -1,26 +1,41 @@
 'use client';
+import axios from 'axios';
 import { useState } from 'react';
+import { Input } from "@/components/ui/input"
+import { Button } from '@/components/ui/button';
+import { Location } from '@/lib/types/location';
 
-//@ts-ignore
-const MapSearch = ({getSearchResults}) => {
-    const[ query, setQuery ] = useState('');
+const MapSearch = ({setPlaces}: {
+  setPlaces: (arg: Location[]) => void
+}) => {
+    const [ query, setQuery ] = useState('');
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        getSearchResults();
+        setQuery(e.target.value);
+        if(!query)
+          return
+        const response = await axios.get(`http://localhost:8081/api/places?q=${query}`)
+        const places = response.data.places;
+        console.log(places);
+        setPlaces(places);
     }
 
   return (
-    <form 
-    className='search-form'
-    onSubmit={ handleSubmit }>
-        <input type='text' 
-        className='search-input' 
-        placeholder='Search courses...'
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}/>
-        <button className='search-button' type='submit'>Search</button>
-    </form>
+    <div>
+        <Input 
+          type="text" 
+          placeholder="search for objects" 
+          value={query}
+          onChange={(e) => {setQuery(e.target.value); console.log(query)}}
+          />
+        <Button 
+          variant='default' 
+          onClick={handleSubmit} 
+          >
+            Search
+        </Button>
+    </div>
   )
 }
 
