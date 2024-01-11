@@ -1,205 +1,341 @@
-export const WYPIERDALAJ_Z_TYMI_MAPAMI = {
-    "paths":[
+export const WYPIERDALAJ_Z_TYMI_MAPAMI = 
+{
+    "bounds":{
+       "northeast":{
+          "lat":54.3700428,
+          "lng":18.6075751
+       },
+       "southwest":{
+          "lat":54.3578323,
+          "lng":18.5870744
+       }
+    },
+    "copyrights":"Map data ©2024 Google",
+    "legs":[
        {
-          "distance":2100,
-          "duration":1860,
-          "end_address":"Cygańska Góra 3A, 80-171 Gdańsk, Poland",
-          "end_coordinates":{
-             "lat":54.3587234,
-             "lon":18.6203576
+          "distance":{
+             "text":"2.2 km",
+             "value":2232
+          },
+          "duration":{
+             "text":"37 mins",
+             "value":2205
+          },
+          "end_address":"Morena PL, Jaśkowa Dolina 134, 80-286 Gdańsk, Poland",
+          "end_location":{
+             "lat":54.3578323,
+             "lng":18.587279
           },
           "start_address":"Traugutta 119, 80-226 Gdańsk, Poland",
-          "start_coordinates":{
+          "start_location":{
              "lat":54.36927,
-             "lon":18.6074464
+             "lng":18.6074464
           },
           "steps":[
              {
-                "distance":11,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.369366,
-                   "lon":18.6074885
+                "distance":{
+                   "text":"88 m",
+                   "value":88
                 },
-                "instruction":"Head north",
-                "start_coordinates":{
+                "duration":{
+                   "text":"1 min",
+                   "value":72
+                },
+                "end_location":{
+                   "lat":54.3700428,
+                   "lng":18.6075751
+                },
+                "html_instructions":"Head <b>north</b> toward <b>Traugutta</b>",
+                "polyline":{
+                   "points":"}~yjIqgqpBA?QGECEAU@q@BM@GAIEQK"
+                },
+                "start_location":{
                    "lat":54.36927,
-                   "lon":18.6074464
-                }
+                   "lng":18.6074464
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":75,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.3693991,
-                   "lon":18.6086321
+                "distance":{
+                   "text":"0.2 km",
+                   "value":192
                 },
-                "instruction":"Turn right toward Traugutta",
-                "start_coordinates":{
-                   "lat":54.369366,
-                   "lon":18.6074885
-                }
+                "duration":{
+                   "text":"5 mins",
+                   "value":274
+                },
+                "end_location":{
+                   "lat":54.3693648,
+                   "lng":18.6051321
+                },
+                "html_instructions":"Turn <b>left</b> onto <b>Traugutta</b><div style=\"font-size:0.9em\">Take the stairs</div>",
+                "maneuver":"turn-left",
+                "polyline":{
+                   "points":"wczjIkhqpB?T?d@@V?F?t@?XTpBDNNPFDZLHDLNBD@B@FHr@Jx@"
+                },
+                "start_location":{
+                   "lat":54.3700428,
+                   "lng":18.6075751
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":91,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.37019890000001,
-                   "lon":18.6088618
+                "distance":{
+                   "text":"20 m",
+                   "value":20
                 },
-                "instruction":"Turn left toward Traugutta",
-                "start_coordinates":{
-                   "lat":54.3693991,
-                   "lon":18.6086321
-                }
+                "duration":{
+                   "text":"1 min",
+                   "value":32
+                },
+                "end_location":{
+                   "lat":54.369497,
+                   "lng":18.6049209
+                },
+                "html_instructions":"Turn <b>right</b>",
+                "maneuver":"turn-right",
+                "polyline":{
+                   "points":"o_zjIayppB[h@"
+                },
+                "start_location":{
+                   "lat":54.3693648,
+                   "lng":18.6051321
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":100,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.3702125,
-                   "lon":18.6105354
+                "distance":{
+                   "text":"0.2 km",
+                   "value":200
                 },
-                "instruction":"Turn right onto Traugutta",
-                "start_coordinates":{
-                   "lat":54.37019890000001,
-                   "lon":18.6088618
-                }
+                "duration":{
+                   "text":"4 mins",
+                   "value":225
+                },
+                "end_location":{
+                   "lat":54.3681614,
+                   "lng":18.6030761
+                },
+                "html_instructions":"Turn <b>left</b>",
+                "maneuver":"turn-left",
+                "polyline":{
+                   "points":"k`zjIwwppB`@Rd@V\\P\\PNLJHDH?@HPVx@FV@JPf@?@Xt@Lj@"
+                },
+                "start_location":{
+                   "lat":54.369497,
+                   "lng":18.6049209
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":100,
-                "duration":120,
-                "end_coordinates":{
-                   "lat":54.36919109999999,
-                   "lon":18.6103891
+                "distance":{
+                   "text":"0.5 km",
+                   "value":469
                 },
-                "instruction":"Turn right onto Do Studzienki",
-                "start_coordinates":{
-                   "lat":54.3702125,
-                   "lon":18.6105354
-                }
+                "duration":{
+                   "text":"9 mins",
+                   "value":534
+                },
+                "end_location":{
+                   "lat":54.3651863,
+                   "lng":18.5982597
+                },
+                "html_instructions":"Slight <b>left</b>",
+                "maneuver":"turn-slight-left",
+                "polyline":{
+                   "points":"_xyjIglppBHJx@hAHNLXH\\DVLn@@FNv@BPFTDJFFFHLHFDDDDBDDFDXFPHPHFBDDDB@BBDBHBDDHDFLR@@JPFJFHPTHLBDNVFJ@BNb@d@vADN@BDFDFBHBFFR@DBBBFBD@FHRJZN\\PV"
+                },
+                "start_location":{
+                   "lat":54.3681614,
+                   "lng":18.6030761
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":17,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.3691144,
-                   "lon":18.6106193
+                "distance":{
+                   "text":"0.4 km",
+                   "value":417
                 },
-                "instruction":"Turn left",
-                "start_coordinates":{
-                   "lat":54.36919109999999,
-                   "lon":18.6103891
-                }
+                "duration":{
+                   "text":"6 mins",
+                   "value":342
+                },
+                "end_location":{
+                   "lat":54.3620522,
+                   "lng":18.5962652
+                },
+                "html_instructions":"Turn <b>right</b> onto <b>Raciborskiego</b>",
+                "maneuver":"turn-right",
+                "polyline":{
+                   "points":"meyjIcnopBEZAJAH?H?FBJDNBJDJDHDDDDh@PPFXFFDJJXX\\`@VXHHJ@LBNBH@F@FHT\\d@t@LRHHDDHFJBH?NAXE`@IXEBAx@OR?\\E"
+                },
+                "start_location":{
+                   "lat":54.3651863,
+                   "lng":18.5982597
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":100,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.3682944,
-                   "lon":18.6108119
+                "distance":{
+                   "text":"62 m",
+                   "value":62
                 },
-                "instruction":"Turn right",
-                "start_coordinates":{
-                   "lat":54.3691144,
-                   "lon":18.6106193
-                }
+                "duration":{
+                   "text":"1 min",
+                   "value":52
+                },
+                "end_location":{
+                   "lat":54.3620437,
+                   "lng":18.5953139
+                },
+                "html_instructions":"Turn <b>right</b> onto <b>Wileńska</b>",
+                "maneuver":"turn-right",
+                "polyline":{
+                   "points":"yqxjIuaopB?nB@nA"
+                },
+                "start_location":{
+                   "lat":54.3620522,
+                   "lng":18.5962652
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":200,
-                "duration":180,
-                "end_coordinates":{
-                   "lat":54.3671291,
-                   "lon":18.611662
+                "distance":{
+                   "text":"0.5 km",
+                   "value":542
                 },
-                "instruction":"Turn right",
-                "start_coordinates":{
-                   "lat":54.3682944,
-                   "lon":18.6108119
-                }
+                "duration":{
+                   "text":"8 mins",
+                   "value":464
+                },
+                "end_location":{
+                   "lat":54.3593676,
+                   "lng":18.5889145
+                },
+                "html_instructions":"Turn <b>left</b> to stay on <b>Wileńska</b>",
+                "maneuver":"turn-left",
+                "polyline":{
+                   "points":"wqxjIu{npBF?H@DB@@@BBF@HBN?P?H@^?X@T@^@TBRFn@F`@Jr@TrBP|@RbADVNv@^rBFZHb@TbAHNRV^f@JJjAtAn@n@HLNR^b@JNJJTR"
+                },
+                "start_location":{
+                   "lat":54.3620437,
+                   "lng":18.5953139
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":21,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.3670967,
-                   "lon":18.611978
+                "distance":{
+                   "text":"26 m",
+                   "value":26
                 },
-                "instruction":"Turn left toward Sobieskiego",
-                "start_coordinates":{
-                   "lat":54.3671291,
-                   "lon":18.611662
-                }
+                "duration":{
+                   "text":"1 min",
+                   "value":22
+                },
+                "end_location":{
+                   "lat":54.359461,
+                   "lng":18.5885522
+                },
+                "html_instructions":"Turn <b>right</b> toward <b>Jaśkowa Dolina</b>",
+                "maneuver":"turn-right",
+                "polyline":{
+                   "points":"aaxjIusmpBEN?RKb@"
+                },
+                "start_location":{
+                   "lat":54.3593676,
+                   "lng":18.5889145
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":90,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.3663125,
-                   "lon":18.6116273
+                "distance":{
+                   "text":"0.2 km",
+                   "value":170
                 },
-                "instruction":"Turn right toward Sobieskiego",
-                "start_coordinates":{
-                   "lat":54.3670967,
-                   "lon":18.611978
-                }
+                "duration":{
+                   "text":"2 mins",
+                   "value":146
+                },
+                "end_location":{
+                   "lat":54.3581995,
+                   "lng":18.5870744
+                },
+                "html_instructions":"Turn <b>left</b> onto <b>Jaśkowa Dolina</b>",
+                "maneuver":"turn-left",
+                "polyline":{
+                   "points":"saxjImqmpBZ^z@dAp@z@TXX^n@r@PV"
+                },
+                "start_location":{
+                   "lat":54.359461,
+                   "lng":18.5885522
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":65,
-                "duration":60,
-                "end_coordinates":{
-                   "lat":54.3661971,
-                   "lon":18.6126131
+                "distance":{
+                   "text":"29 m",
+                   "value":29
                 },
-                "instruction":"Turn left toward Sobieskiego",
-                "start_coordinates":{
-                   "lat":54.3663125,
-                   "lon":18.6116273
-                }
+                "duration":{
+                   "text":"1 min",
+                   "value":28
+                },
+                "end_location":{
+                   "lat":54.3579802,
+                   "lng":18.5873291
+                },
+                "html_instructions":"Turn <b>left</b>",
+                "maneuver":"turn-left",
+                "polyline":{
+                   "points":"wywjIehmpBLO\\c@"
+                },
+                "start_location":{
+                   "lat":54.3581995,
+                   "lng":18.5870744
+                },
+                "travel_mode":"WALKING"
              },
              {
-                "distance":500,
-                "duration":480,
-                "end_coordinates":{
-                   "lat":54.3618169,
-                   "lon":18.6111264
+                "distance":{
+                   "text":"17 m",
+                   "value":17
                 },
-                "instruction":"Turn right onto Sobieskiego",
-                "start_coordinates":{
-                   "lat":54.3661971,
-                   "lon":18.6126131
-                }
-             },
-             {
-                "distance":500,
-                "duration":540,
-                "end_coordinates":{
-                   "lat":54.35925,
-                   "lon":18.6175172
+                "duration":{
+                   "text":"1 min",
+                   "value":14
                 },
-                "instruction":"Turn left onto Nowa Medyków",
-                "start_coordinates":{
-                   "lat":54.3618169,
-                   "lon":18.6111264
-                }
-             },
-             {
-                "distance":200,
-                "duration":120,
-                "end_coordinates":{
-                   "lat":54.3587234,
-                   "lon":18.6203576
+                "end_location":{
+                   "lat":54.3578323,
+                   "lng":18.587279
                 },
-                "instruction":"Continue straight onto Cygańska GóraDestination will be on the right",
-                "start_coordinates":{
-                   "lat":54.35925,
-                   "lon":18.6175172
-                }
+                "html_instructions":"Turn <b>right</b>",
+                "maneuver":"turn-right",
+                "polyline":{
+                   "points":"kxwjIyimpBB@F@PD"
+                },
+                "start_location":{
+                   "lat":54.3579802,
+                   "lng":18.5873291
+                },
+                "travel_mode":"WALKING"
              }
+          ],
+          "traffic_speed_entry":[
+             
+          ],
+          "via_waypoint":[
+             
           ]
-       },
-       {
-          
        }
+    ],
+    "overview_polyline":{
+       "points":"}~yjIqgqpB_@M}AD[Q?z@@nBZ`CVVd@RPTL~@Jx@[h@fAj@z@b@ZVf@vAZlAXt@Lj@bAtAVh@Nt@b@`CL`@NP`@XLJj@Pd@Vf@~@lAjBHNt@zBRb@Pj@LXTn@`@t@Iz@Ln@JTJJ|Af@zA`BTJ\\FPB\\f@r@hANNTJXAxAWlAO\\E?nB@nAF?NDHVJpD^xCTrBP|@XzA`AjFTbAHNr@~@pC~CfArATREN?RKb@vAdBfAtAhArAPVLO\\c@B@XF"
+    },
+    "summary":"Raciborskiego",
+    "warnings":[
+       "Walking directions are in beta. Use caution – This route may be missing sidewalks or pedestrian paths."
+    ],
+    "waypoint_order":[
+       
     ]
  }

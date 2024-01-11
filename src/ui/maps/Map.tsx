@@ -7,7 +7,7 @@ import RoutePoints from './RoutePoints';
 import { Location } from '@/lib/types/location';
 import StationInfo from './StationInfo';
 import { WYPIERDALAJ_Z_TYMI_MAPAMI } from './jsontest';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, Polyline, DirectionsRenderer } from '@react-google-maps/api';
 
 export interface MapPropsTypes {
     center: {
@@ -33,6 +33,8 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   const [routeSource, setRouteSource] = useState<Location | undefined>();
   const [routeDestination, setRouteDestination] = useState<Location | undefined>()
   const [displayRoute, setDisplayRoute] = useState<Boolean>(false);
+  
+  let [route, setRoute] = useState({routes: [WYPIERDALAJ_Z_TYMI_MAPAMI]});
 
   const {isLoaded} = useLoadScript({
     googleMapsApiKey: api_key
@@ -43,6 +45,8 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     height: '100%',
   };
 
+  let mapRef = useRef(null)
+
   useEffect(() => {
     const fetchStations = async () => {
       const response = await axios.get(`http://localhost:8080/api/stations`);
@@ -52,6 +56,8 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     }
     fetchStations();
   }, [])
+
+
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -75,6 +81,7 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     setRouteSource(undefined);
   }
 
+
   if(!isLoaded) {
     return <div> loading </div>
   }
@@ -85,6 +92,7 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
         zoom={zoom}
         center={center}
         mapContainerStyle={mapContainerStyle}
+        ref={mapRef}
       >
         {stations.map((station) => {
           return <Marker
@@ -94,27 +102,30 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
             key={station.id}
           />
         })}
-      </GoogleMap>
-        <span className='min-h-48 flex flex-col justify-start items-center'>
-        {(displayStationInfo && displayedStation && displayedStationVehicles) && 
-          <StationInfo
-            displayedStation={displayedStation}
-            displayedStationVehicles={displayedStationVehicles}
-            waypoints={waypoints}
-            setRouteSource={setRouteSource}
-            setRouteDestination={setRouteDestination}
-            setWaypoints={setWaypoints}
+          <DirectionsRenderer 
+            directions={route}
           />
-        }
+        </GoogleMap>
+      <span className='min-h-48 flex flex-col justify-start items-center'>
+      {(displayStationInfo && displayedStation && displayedStationVehicles) && 
+        <StationInfo
+          displayedStation={displayedStation}
+          displayedStationVehicles={displayedStationVehicles}
+          waypoints={waypoints}
+          setRouteSource={setRouteSource}
+          setRouteDestination={setRouteDestination}
+          setWaypoints={setWaypoints}
+        />
+      }
 
-        {(waypoints) && 
-          <RoutePoints 
-            routeDestination={routeDestination} 
-            routeSource={routeSource} 
-            waypoints={waypoints}
-            resetRoute={resetRoute}
-            />
-        }
+      {(waypoints) && 
+        <RoutePoints 
+          routeDestination={routeDestination} 
+          routeSource={routeSource} 
+          waypoints={waypoints}
+          resetRoute={resetRoute}
+          />
+      }
       </span>
     </div>
   )
