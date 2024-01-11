@@ -5,10 +5,10 @@ require('dotenv').config()
 const MapWrapper = () => {
     const defaultProps = {
         center: {
-          lat: 54.4279049,
-          lng: 18.5904457
+          lat: 54.35475441815699,
+          lng: 18.593608199444553
         },
-        zoom: 11,
+        zoom: 15,
         api_key: process.env.GOOGLE_MAPS_API_KEY || 'chuj'
       };
   return (
