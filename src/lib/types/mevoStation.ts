@@ -1,11 +1,7 @@
-export interface MevoStation {
-    id: string,
+import { Location } from "./location"
+
+export interface MevoStation extends Location {
     code: string,
-    address: string,
-    coordinates: {
-        lat: number,
-        lon: number
-    },
     park_zone: {
         lat: number,
         lon: number

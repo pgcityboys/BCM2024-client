@@ -1,35 +1,37 @@
 'use client'
-import React, { FC, Suspense, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import  GoogleMapReact  from 'google-map-react';
 import { MevoStation } from '@/lib/types/mevoStation';
 import axios from 'axios';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import { StationVehicles } from '@/lib/types/stationVehicles';
-import { FaBicycle, FaParking } from "react-icons/fa"
+import MapSearch from './MapSearch';
+import RoutePoints from './RoutePoints';
+import { Location } from '@/lib/types/location';
+import StationInfo from './StationInfo';
 
 export interface MapPropsTypes {
     center: {
         lat: number,
-        lng: number,
+        lng: number, 
     },
     zoom: number,
     api_key: string
 }
 
 const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
+  const [mapKey, setMapKey] = useState<string>('initialVal');
 
   const [stations, setStations] = useState<MevoStation[]>([]);
-  const [mapKey, setMapKey] = useState<string>('initialVal');
-  const [displayInfo, setDisplayInfo] = useState<Boolean>(false);
+  
+  const [displayStationInfo, setDisplayInfo] = useState<Boolean>(false);
   const [displayedStation, setDisplayedStation] = useState<MevoStation>();
   const [displayedStationVehicles, setDisplayedStationVehicles] = useState<StationVehicles>();
+  
+  
+  const [waypoints, setWaypoints] = useState<Location[]>([]);
+  const [routeSource, setRouteSource] = useState<Location | undefined>();
+  const [routeDestination, setRouteDestination] = useState<Location | undefined>()
+  const [displayRoute, setDisplayRoute] = useState<Boolean>(false);
 
   useEffect(() => {
     const fetchStations = async () => {
@@ -46,9 +48,8 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
       const response = await axios.get(`http://localhost:8080/api/vehicles/${displayedStation?.id}`);
       const vehicles: StationVehicles = response.data;
       setDisplayedStationVehicles(vehicles);
-      console.log(vehicles)
     }
-    if(displayInfo)
+    if(displayStationInfo)
       fetchVehicles();
   }, [displayedStation])
 
@@ -73,9 +74,16 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     setDisplayInfo(true);
   };
 
+  const resetRoute = () => {
+    setWaypoints([]); 
+    setDisplayRoute(false); 
+    setRouteDestination(undefined);
+    setRouteSource(undefined);
+  }
 
   return (
     <div className='h-full w-full'>
+      <MapSearch getSearchResults={() => console.log('dupa')}/>
       <GoogleMapReact
         key={mapKey}
         bootstrapURLKeys={{ key: api_key }}
@@ -84,21 +92,26 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
       >
-
       </GoogleMapReact>
-      {(displayInfo && displayedStation && displayedStationVehicles) && 
-        <Card>
-        <CardHeader>
-          <CardTitle>Mevo Station: {displayedStation.code}</CardTitle>
-          <CardDescription>Address: {displayedStation.address}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <span className='flex justify-start gap-2'><FaParking/>Parking slots available: {displayedStationVehicles.parking_slots_available}</span>
-          {displayedStationVehicles.vehicles_avaiable.map((vehicle) =>(
-            <span className='flex justify-start gap-2'><FaBicycle/>{vehicle.vehicle_type_id}: {vehicle.count}</span>
-          ))}
-        </CardContent>
-      </Card>
+
+      {(displayStationInfo && displayedStation && displayedStationVehicles) && 
+        <StationInfo
+          displayedStation={displayedStation}
+          displayedStationVehicles={displayedStationVehicles}
+          waypoints={waypoints}
+          setRouteSource={setRouteSource}
+          setRouteDestination={setRouteDestination}
+          setWaypoints={setWaypoints}
+        />
+      }
+
+      {(waypoints) && 
+        <RoutePoints 
+          routeDestination={routeDestination} 
+          routeSource={routeSource} 
+          waypoints={waypoints}
+          resetRoute={resetRoute}
+          />
       }
     </div>
   )
