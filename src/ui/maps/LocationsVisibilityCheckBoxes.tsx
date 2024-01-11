@@ -7,7 +7,7 @@ const LocationsVisibilityCheckBoxes = ({showMarkers, setShowMarkers}:{
   setShowMarkers: (arg: ShowMarkers) => void
 }) => {
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center justify-center gap-8 p-4 m-4">
       <Checkbox 
         id="mevo" 
         checked={showMarkers.showMevo}

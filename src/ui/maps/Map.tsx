@@ -57,8 +57,8 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   })
 
   const mapContainerStyle = {
-    width: '100%',
-    height: '100%',
+    width: '70vw',
+    height: '50vh',
   };
 
   let mapRef = useRef(null)

@@ -8,11 +8,6 @@
     "start": "next start",
     "lint": "next lint --max-warnings 0 --fix"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "dependencies": {
     "@gsap/react": "^2.0.2",
     "@hookform/resolvers": "^3.3.4",

@@ -22,7 +22,7 @@ const MapSearch = ({setPlaces}: {
     }
 
   return (
-    <div>
+    <div className='flex justify-center text-center rounded-xl gap-8 p-4 bg-slate-700'>
         <Input 
           type="text" 
           placeholder="search for objects" 
