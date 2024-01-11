@@ -1,6 +1,5 @@
 'use client'
 import React, { FC, useEffect, useRef, useState } from 'react';
-import  GoogleMapReact  from 'google-map-react';
 import { MevoStation } from '@/lib/types/mevoStation';
 import axios from 'axios';
 import { StationVehicles } from '@/lib/types/stationVehicles';
@@ -8,6 +7,7 @@ import RoutePoints from './RoutePoints';
 import { Location } from '@/lib/types/location';
 import StationInfo from './StationInfo';
 import { WYPIERDALAJ_Z_TYMI_MAPAMI } from './jsontest';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
 export interface MapPropsTypes {
     center: {
@@ -34,9 +34,14 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
   const [routeDestination, setRouteDestination] = useState<Location | undefined>()
   const [displayRoute, setDisplayRoute] = useState<Boolean>(false);
 
+  const {isLoaded} = useLoadScript({
+    googleMapsApiKey: api_key
+  })
 
-  let mapRef = useRef(null)
-  let rendererRef = useRef()
+  const mapContainerStyle = {
+    width: '100%',
+    height: '100%',
+  };
 
   useEffect(() => {
     const fetchStations = async () => {
@@ -58,27 +63,6 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
       fetchVehicles();
   }, [displayedStation, displayStationInfo])
 
-
-  const renderMarkers = (map: any, maps: any) => {
-    mapRef.current = maps;
-    let renderer = new maps.DirectionsRenderer();
-    renderer.setMap(map);
-    rendererRef.current = renderer;
-    let markers: any[] = [];
-    stations.map((location: any) => {
-      const marker = 
-        new maps.Marker({
-          position: {lat: location.coordinates.lat, lng: location.coordinates.lon},
-          map,
-          icon: '../mevo32.png',
-        })
-      marker.addListener('click', () => handleMarkerClick(location));
-      markers.push(marker);
-    });
-    return markers;
-   };
-
-
    const handleMarkerClick = (location: MevoStation) => {
     setDisplayedStation(location);
     setDisplayInfo(true);
@@ -91,21 +75,27 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
     setRouteSource(undefined);
   }
 
-  const renderRoute = () => {
-    rendererRef.current!.setDirections(WYPIERDALAJ_Z_TYMI_MAPAMI)
+  if(!isLoaded) {
+    return <div> loading </div>
   }
 
   return (
     <div className='h-full w-full flex items-start justify-center'>
-      <GoogleMapReact
-        key={mapKey}
-        bootstrapURLKeys={{ key: api_key }}
-        defaultCenter={center}
-        defaultZoom={zoom}
-        yesIWantToUseGoogleMapApiInternals
-        onGoogleApiLoaded={({ map, maps }) => {renderMarkers(map, maps)}}
-      />
-      <span className='min-h-48 flex flex-col justify-start items-center'>
+      <GoogleMap
+        zoom={zoom}
+        center={center}
+        mapContainerStyle={mapContainerStyle}
+      >
+        {stations.map((station) => {
+          return <Marker
+            position={{lat: station.coordinates.lat, lng: station.coordinates.lon}}
+            icon={'../mevo32.png'}
+            onClick={ () => handleMarkerClick(station)}
+            key={station.id}
+          />
+        })}
+      </GoogleMap>
+        <span className='min-h-48 flex flex-col justify-start items-center'>
         {(displayStationInfo && displayedStation && displayedStationVehicles) && 
           <StationInfo
             displayedStation={displayedStation}
