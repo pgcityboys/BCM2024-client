@@ -14,6 +14,7 @@ import { InfoType } from '@/lib/types/InfoType';
 import PlaceInfo from './PlaceInfo';
 import { Checkbox } from '@/components/ui/checkbox';
 import LocationsVisibilityCheckBoxes from './LocationsVisibilityCheckBoxes';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 
 export interface MapPropsTypes {
@@ -123,7 +124,7 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
         showMarkers={showMarkers}
         setShowMarkers={setShowMarkers}
       />
-      <div className='h-full w-full flex items-start justify-center'>
+      <div className='h-[60vh] w-[70vw] flex items-start justify-center gap-12'>
         <GoogleMap
           zoom={zoom}
           center={center}
@@ -146,36 +147,47 @@ const Map: FC<MapPropsTypes> = ({center, zoom, api_key}) => {
             />
           })}
         </GoogleMap>
-          <span className='min-h-48 flex flex-col justify-start items-center'>
-          {(showMarkers.showInfo == InfoType.MEVO && displayedStation && displayedStationVehicles) && 
-            <StationInfo
-              displayedStation={displayedStation}
-              displayedStationVehicles={displayedStationVehicles}
-              waypoints={waypoints}
-              setRouteSource={setRouteSource}
-              setRouteDestination={setRouteDestination}
-              setWaypoints={setWaypoints}
-            />
-          }
-
-          {(showMarkers.showInfo == InfoType.PLACE && displayedPlace) && 
-            <PlaceInfo
-              displayedPlace={displayedPlace}
-              waypoints={waypoints}
-              setRouteSource={setRouteSource}
-              setRouteDestination={setRouteDestination}
-              setWaypoints={setWaypoints}
-            />
-          }   
-
-          {(waypoints) && 
-            <RoutePoints 
-              routeDestination={routeDestination} 
-              routeSource={routeSource} 
-              waypoints={waypoints}
-              resetRoute={resetRoute}
-              />
-          }
+          <span className='h-[60vh] w-[40vw] flex flex-col justify-start items-center bg-slate-600 rounded-xl'>
+          <Tabs defaultValue='Point Info'>
+            <TabsList>
+              <TabsTrigger value='Point Info'> Marker </TabsTrigger>
+              <TabsTrigger value='Mevo'> Mevo </TabsTrigger>
+              <TabsTrigger value='Route'> Route </TabsTrigger>
+            </TabsList>
+            <TabsContent value='Mevo'>
+              {(showMarkers.showInfo == InfoType.MEVO && displayedStation && displayedStationVehicles) && 
+                <StationInfo
+                  displayedStation={displayedStation}
+                  displayedStationVehicles={displayedStationVehicles}
+                  waypoints={waypoints}
+                  setRouteSource={setRouteSource}
+                  setRouteDestination={setRouteDestination}
+                  setWaypoints={setWaypoints}
+                />
+              }
+            </TabsContent>
+            <TabsContent value='Point Info'>
+              {(showMarkers.showInfo == InfoType.PLACE && displayedPlace) && 
+                <PlaceInfo
+                  displayedPlace={displayedPlace}
+                  waypoints={waypoints}
+                  setRouteSource={setRouteSource}
+                  setRouteDestination={setRouteDestination}
+                  setWaypoints={setWaypoints}
+                />
+              }   
+            </TabsContent>
+            <TabsContent value='Route'>
+            {(waypoints) && 
+              <RoutePoints 
+                routeDestination={routeDestination} 
+                routeSource={routeSource} 
+                waypoints={waypoints}
+                resetRoute={resetRoute}
+                />
+            }
+            </TabsContent>
+          </Tabs>
         </span>
       </div>
     </div>
