@@ -340,4 +340,4 @@ export const WYPIERDALAJ_Z_TYMI_MAPAMI =
     ]
  }
 
-export const lepsze_mapy: google.maps.LatLngLiteral[] = WYPIERDALAJ_Z_TYMI_MAPAMI.paths[0].steps!.map((step) => {return {lat: step.start_coordinates.lat || 0, lng: step.start_coordinates.lon || 0}});
+export const lepsze_mapy: google.maps.LatLngLiteral[] = WYPIERDALAJ_Z_TYMI_MAPAMI.legs[0].steps!.map((step) => {return {lat: step.start_location.lat || 0, lng: step.start_location.lng || 0}});
